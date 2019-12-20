@@ -8,10 +8,16 @@ Your browser does not support the HTML5 canvas tag.</canvas>
 </div>
 
 <script>
+    function draw_rectangle(X, Y)
+    {
+        dx = 130
+        dy = 80;
+        ctx.rect(X, Y, X+dx, Y+dy);
+    }
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
 ctx.beginPath();
-ctx.rect(20, 20, 150, 100);
+draw_rectangle(20, 20);
 ctx.stroke();
 </script>
 
