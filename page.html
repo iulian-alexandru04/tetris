@@ -27,10 +27,10 @@ Your browser does not support the HTML5 canvas tag.</canvas>
     {
         var left_key = 37;
         var right_key = 39;
-        if(event.keyCode == right_key)
+        if(event.keyCode == right_key && x*50+50<500)
             x++;
         
-        if(event.keyCode == left_key)
+        if(event.keyCode == left_key && x > 0)
             x--;
 
     }
