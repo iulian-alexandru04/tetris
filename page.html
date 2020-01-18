@@ -20,7 +20,8 @@ Your browser does not support the HTML5 canvas tag.</canvas>
         ctx.beginPath();
         draw_rectangle(y, x);
         ctx.stroke();
-        y++;
+        if(y*50+50<750)
+            y++;
     }
 var y = 0;
 var x = 1;
