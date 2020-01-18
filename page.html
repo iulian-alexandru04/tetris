@@ -23,12 +23,24 @@ Your browser does not support the HTML5 canvas tag.</canvas>
         if(y*50+50<750)
             y++;
     }
+    function key_handler(event)
+    {
+        var left_key = 37;
+        var right_key = 39;
+        if(event.keyCode == right_key)
+            x++;
+        
+        if(event.keyCode == left_key)
+            x--;
+
+    }
 var y = 0;
 var x = 1;
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
     
 setInterval(draw_frame, 1000);
+window.addEventListener("keydown", key_handler);
 </script>
 
 </body>
