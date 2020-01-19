@@ -18,6 +18,8 @@ Your browser does not support the HTML5 canvas tag.</canvas>
     {
         ctx.clearRect(0, 0, 500, 750);
         ctx.beginPath();
+        for(i=0; i<stored_blocks.length; i++)
+            draw_rectangle(stored_blocks[i].Y, stored_blocks[i].X);
         draw_rectangle(y, x);
         ctx.stroke();
     }
@@ -35,16 +37,30 @@ Your browser does not support the HTML5 canvas tag.</canvas>
     }
     function push_down()
     {
-        if(y*50+50<750)
-            y++;
+        y++;
+        if(touched_ground(y))
+        {
+            keep_in_place(y, x)
+            y = 0;
+            x = 1;
+        }
         draw_frame();
+    }
+    function touched_ground(y)
+    {
+        return y*50+50 == 750;
+    }
+    function keep_in_place(y, x)
+    {
+        stored_blocks.push({X: x, Y:y});
     }
 var y = 0;
 var x = 1;
+var stored_blocks = [];
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
     
-setInterval(push_down, 1000);
+setInterval(push_down, 500);
 window.addEventListener("keydown", key_handler);
 </script>
 
