@@ -38,7 +38,7 @@ Your browser does not support the HTML5 canvas tag.</canvas>
     function push_down()
     {
         y++;
-        if(touched_ground(y))
+        if(touched_ground(y, x))
         {
             keep_in_place(y, x)
             y = 0;
@@ -46,8 +46,17 @@ Your browser does not support the HTML5 canvas tag.</canvas>
         }
         draw_frame();
     }
-    function touched_ground(y)
+    function touched_ground(y, x)
     {
+        for(i=0; i<stored_blocks.length; i++)
+            if (stored_blocks[i].X == x)
+            {
+                if(stored_blocks[i].Y == (y+1))
+                {
+                    console.log('Y');
+                    return true;
+                }
+            }
         return y*50+50 == 750;
     }
     function keep_in_place(y, x)
@@ -60,7 +69,7 @@ var stored_blocks = [];
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
     
-setInterval(push_down, 500);
+setInterval(push_down, 200);
 window.addEventListener("keydown", key_handler);
 </script>
 
