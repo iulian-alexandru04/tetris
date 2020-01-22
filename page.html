@@ -8,26 +8,25 @@ Your browser does not support the HTML5 canvas tag.</canvas>
 </div>
 
 <script>
-    function draw_rectangle(Y, X)
+    function draw_rectangle(Y, X, C)
     {
-        dx = 50;
-        dy = 50;
-        ctx.rect(X*dx, Y*dy, dx, dy);
+        ctx.fillStyle = C;
+        ctx.fillRect(X*dim, Y*dim, dim, dim);
     }
     function draw_frame()
     {
-        ctx.clearRect(0, 0, 500, 750);
+        ctx.clearRect(0, 0, width, height);
         ctx.beginPath();
         for(i=0; i<stored_blocks.length; i++)
-            draw_rectangle(stored_blocks[i].Y, stored_blocks[i].X);
-        draw_rectangle(y, x);
+            draw_rectangle(stored_blocks[i].Y, stored_blocks[i].X, stored_blocks[i].C);
+        draw_rectangle(y, x, c);
         ctx.stroke();
     }
     function key_handler(event)
     {
         var left_key = 37;
         var right_key = 39;
-        if(event.keyCode == right_key && x*50+50<500)
+        if(event.keyCode == right_key && x*dim+dim<width)
             x++;
         
         if(event.keyCode == left_key && x > 0)
@@ -40,9 +39,10 @@ Your browser does not support the HTML5 canvas tag.</canvas>
         y++;
         if(touched_ground(y, x))
         {
-            keep_in_place(y, x)
+            keep_in_place(y, x, c)
             y = 0;
             x = 1;
+            c = '#'+Math.floor(Math.random()*16777215).toString(16);
         }
         draw_frame();
     }
@@ -50,24 +50,23 @@ Your browser does not support the HTML5 canvas tag.</canvas>
     {
         for(i=0; i<stored_blocks.length; i++)
             if (stored_blocks[i].X == x)
-            {
                 if(stored_blocks[i].Y == (y+1))
-                {
-                    console.log('Y');
                     return true;
-                }
-            }
-        return y*50+50 == 750;
+        return y*dim+dim == height;
     }
-    function keep_in_place(y, x)
+    function keep_in_place(y, x, c)
     {
-        stored_blocks.push({X: x, Y:y});
+        stored_blocks.push({X: x, Y:y, C:c});
     }
 var y = 0;
 var x = 1;
+var c = "#000000"
+var dim = 50;
+var width = 500;
+var height = 750;
 var stored_blocks = [];
-var c = document.getElementById("myCanvas");
-var ctx = c.getContext("2d");
+var my_canvas = document.getElementById("myCanvas");
+var ctx = my_canvas.getContext("2d");
     
 setInterval(push_down, 200);
 window.addEventListener("keydown", key_handler);
