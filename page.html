@@ -5,6 +5,7 @@
 <div align="center">
 <canvas id="myCanvas" width="500" height="750" style="border:1px solid #d3d3d3;">
 Your browser does not support the HTML5 canvas tag.</canvas>
+<h1 id="msg"></h1>
 </div>
 
 <script>
@@ -37,14 +38,12 @@ Your browser does not support the HTML5 canvas tag.</canvas>
     function push_down()
     {
         y++;
+        draw_frame();
         if(touched_ground(y, x))
         {
-            keep_in_place(y, x, c)
-            y = 0;
-            x = 1;
-            c = '#'+Math.floor(Math.random()*16777215).toString(16);
+            keep_in_place(y, x, c);
+            generate_block();
         }
-        draw_frame();
     }
     function touched_ground(y, x)
     {
@@ -58,9 +57,21 @@ Your browser does not support the HTML5 canvas tag.</canvas>
     {
         stored_blocks.push({X: x, Y:y, C:c});
     }
+    function generate_block()
+    {
+            y = 0;
+            x = 1;
+            c = '#'+Math.floor(Math.random()*16777215).toString(16);
+            draw_frame();
+            if(touched_ground(y, x))
+            {
+                document.getElementById("msg").innerHTML = "Game Over!"
+                clearInterval(push_down_interval);
+            }
+    }
 var y = 0;
 var x = 1;
-var c = "#000000"
+var c = "#000000";
 var dim = 50;
 var width = 500;
 var height = 750;
@@ -68,7 +79,7 @@ var stored_blocks = [];
 var my_canvas = document.getElementById("myCanvas");
 var ctx = my_canvas.getContext("2d");
     
-setInterval(push_down, 200);
+push_down_interval = setInterval(push_down, 200);
 window.addEventListener("keydown", key_handler);
 </script>
 
