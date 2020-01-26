@@ -68,9 +68,34 @@ Your browser does not support the HTML5 canvas tag.</canvas>
                     return true;
         return false;
     }
+    function remove_blocks_from_line_and_shift_others(y)
+    {
+        higher = stored_blocks.filter(function(value, index, arr){
+            return value.Y < y;
+        });
+        lower = stored_blocks.filter(function(value, index, arr){
+            return value.Y > y;
+        });
+        for(let i=0; i<higher.length; i++)
+            higher[i].Y++;
+        stored_blocks = lower.concat(higher);
+    }
+    function remove_blocks_if_complete_line()
+    {
+        for(let i=max_y_blocks-1; i>=0; i--)
+        {
+            complete_line = true;
+            for(j=0; j<max_x_blocks && complete_line; j++)
+                if(!overlap(i, j))
+                    complete_line = false;
+            if(complete_line)
+                remove_blocks_from_line_and_shift_others(i);
+        }
+    }
     function keep_in_place(y, x, c)
     {
         stored_blocks.push({X: x, Y:y, C:c});
+        remove_blocks_if_complete_line();
     }
     function generate_block()
     {
