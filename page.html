@@ -11,6 +11,8 @@ Your browser does not support the HTML5 canvas tag.</canvas>
 <script>
     function draw_rectangle(Y, X, C)
     {
+        if(C == undefined)
+            return;
         ctx.fillStyle = C;
         ctx.fillRect(X*dim, Y*dim, dim, dim);
     }
@@ -18,8 +20,9 @@ Your browser does not support the HTML5 canvas tag.</canvas>
     {
         ctx.clearRect(0, 0, width, height);
         ctx.beginPath();
-        for(i=0; i<stored_blocks.length; i++)
-            draw_rectangle(stored_blocks[i].Y, stored_blocks[i].X, stored_blocks[i].C);
+        for(let i=0; i<max_y_blocks; i++)
+            for(let j=0; j<max_x_blocks; j++)
+                draw_rectangle(i, j, block_matrix[i][j]);
         draw_rectangle(y, x, c);
         ctx.stroke();
     }
@@ -62,23 +65,13 @@ Your browser does not support the HTML5 canvas tag.</canvas>
     }
     function overlap(y, x)
     {
-        for(i=0; i<stored_blocks.length; i++)
-            if (stored_blocks[i].X == x)
-                if(stored_blocks[i].Y == y)
-                    return true;
-        return false;
+        return block_matrix[y][x] != undefined;
     }
     function remove_blocks_from_line_and_shift_others(y)
     {
-        higher = stored_blocks.filter(function(value, index, arr){
-            return value.Y < y;
-        });
-        lower = stored_blocks.filter(function(value, index, arr){
-            return value.Y > y;
-        });
-        for(let i=0; i<higher.length; i++)
-            higher[i].Y++;
-        stored_blocks = lower.concat(higher);
+        for(let i=y; i>0; i--)
+            block_matrix[i] = block_matrix[i-1];
+        block_matrix[0] = new Array(max_x_blocks);
     }
     function remove_blocks_if_complete_line()
     {
@@ -94,7 +87,7 @@ Your browser does not support the HTML5 canvas tag.</canvas>
     }
     function keep_in_place(y, x, c)
     {
-        stored_blocks.push({X: x, Y:y, C:c});
+        block_matrix[y][x] = c;
         remove_blocks_if_complete_line();
     }
     function generate_block()
@@ -120,10 +113,12 @@ var width = 500;
 var height = 750;
 var max_y_blocks = height / dim;
 var max_x_blocks = width / dim;
-var stored_blocks = [];
 var my_canvas = document.getElementById("myCanvas");
 var ctx = my_canvas.getContext("2d");
-    
+var block_matrix = [];
+for(let i=0; i<max_y_blocks; i++) {
+    block_matrix[i] = new Array(max_x_blocks);
+}
 push_down_interval = setInterval(push_down, 200);
 window.addEventListener("keydown", key_handler);
 </script>
