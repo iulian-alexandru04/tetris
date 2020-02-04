@@ -46,6 +46,7 @@ Your browser does not support the HTML5 canvas tag.</canvas>
     function key_handler(event)
     {
         var left_key = 37;
+        var up_arrow_key = 38;
         var right_key = 39;
         if(event.keyCode == right_key)
             if(valid_piece_offset(piece, 0, 1))
@@ -55,6 +56,13 @@ Your browser does not support the HTML5 canvas tag.</canvas>
             if(valid_piece_offset(piece, 0, -1))
                 piece.x_offset--;
 
+        if(event.keyCode == up_arrow_key)
+        {
+
+            new_piece = rotate_piece(piece);
+            if(valid_piece_offset(new_piece, 0, 0))
+                piece = new_piece;
+        }
         draw_frame();
     }
     function push_down()
@@ -119,6 +127,19 @@ Your browser does not support the HTML5 canvas tag.</canvas>
             ];
         let index = Math.floor(Math.random()*shapes.length)
         return shapes[index];
+    }
+    function rotate_piece(piece)
+    {
+        let result_shape = [];
+        for(block of piece.shape)
+            result_shape.push(project_block_rotation(block));
+        new_piece = JSON.parse(JSON.stringify(piece));
+        new_piece.shape = result_shape;
+        return new_piece;
+    }
+    function project_block_rotation(block)
+    {
+        return [-block[1], block[0]];
     }
     function generate_block()
     {
