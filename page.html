@@ -15,7 +15,6 @@ Your browser does not support the HTML5 canvas tag.</canvas>
             return;
         ctx.fillStyle = C;
         ctx.fillRect(X*dim, Y*dim, dim, dim);
-        // ctx.fill();
         ctx.lineWidth = 5;
         ctx.strokeStyle = "#000000";
         ctx.strokeRect(X*dim, Y*dim, dim, dim);
@@ -35,7 +34,6 @@ Your browser does not support the HTML5 canvas tag.</canvas>
             for(let j=0; j<max_x_blocks; j++)
                 draw_rectangle(i, j, block_matrix[i][j]);
         draw_piece(piece);
-        // ctx.stroke();
     }
     function valid_piece_offset(piece, delta_y, delta_x)
     {
@@ -164,13 +162,14 @@ var height = 750;
 var max_y_shape = 2;
 var max_y_blocks = height / dim;
 var max_x_blocks = width / dim;
-var piece = {shape:[[0, 0], [0, 1]], color:"#000000", y_offset:0, x_offset:max_x_blocks/2};
+var piece = null;
 var my_canvas = document.getElementById("myCanvas");
 var ctx = my_canvas.getContext("2d");
 var block_matrix = [];
 for(let i=0; i<max_y_blocks; i++) {
     block_matrix[i] = new Array(max_x_blocks);
 }
+generate_block();
 push_down_interval = setInterval(push_down, 200);
 window.addEventListener("keydown", key_handler);
 </script>
