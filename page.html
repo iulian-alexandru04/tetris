@@ -139,7 +139,7 @@ Your browser does not support the HTML5 canvas tag.</canvas>
     }
     function project_block_rotation(block)
     {
-        return [-block[1], block[0]];
+        return [max_y_shape-block[1], block[0]];
     }
     function generate_block()
     {
@@ -154,12 +154,13 @@ Your browser does not support the HTML5 canvas tag.</canvas>
         }
         draw_frame();
     }
-var piece = {shape:[[0, 0], [0, 1]], color:"#000000", y_offset:0, x_offset:3};
 var dim = 50;
 var width = 500;
 var height = 750;
+var max_y_shape = 2;
 var max_y_blocks = height / dim;
 var max_x_blocks = width / dim;
+var piece = {shape:[[0, 0], [0, 1]], color:"#000000", y_offset:0, x_offset:max_x_blocks/2};
 var my_canvas = document.getElementById("myCanvas");
 var ctx = my_canvas.getContext("2d");
 var block_matrix = [];
