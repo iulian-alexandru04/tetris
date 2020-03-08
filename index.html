@@ -3,7 +3,7 @@
 <body>
 
 <div align="right">
-    <h3 style="float:left;">SCORE:</h3>
+    <h3 id="score" style="float:left;">SCORE: 1</h3>
 </div>
 <div align="center">
 <canvas id="myCanvas" width="500" height="750" style="border:1px solid #d3d3d3;">
@@ -63,7 +63,6 @@ Your browser does not support the HTML5 canvas tag.</canvas>
 
         if(event.keyCode == up_arrow_key)
         {
-
             new_piece = rotate_piece(piece);
             if(valid_piece_offset(new_piece, 0, 0))
                 piece = new_piece;
@@ -110,7 +109,11 @@ Your browser does not support the HTML5 canvas tag.</canvas>
                 if(!overlap(i, j))
                     complete_line = false;
             if(complete_line)
-                remove_blocks_from_line_and_shift_others(i);
+            { 
+                remove_blocks_from_line_and_shift_others(i); 
+                score++;
+                document.getElementById("score").innerHTML = "SCORE: " + score
+            }
         }
     }
     function keep_in_place(piece)
@@ -159,6 +162,7 @@ Your browser does not support the HTML5 canvas tag.</canvas>
         }
         draw_frame();
     }
+var score = 0;
 var dim = 50;
 var width = 500;
 var height = 750;
@@ -173,7 +177,7 @@ for(let i=0; i<max_y_blocks; i++) {
     block_matrix[i] = new Array(max_x_blocks);
 }
 generate_block();
-push_down_interval = setInterval(push_down, 200);
+push_down_interval = setInterval(push_down, 333);
 window.addEventListener("keydown", key_handler);
 </script>
 
